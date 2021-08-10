@@ -27,7 +27,6 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "seg_perfil")
-
 public class SegPerfil implements Serializable {
 
     @Id

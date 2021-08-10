@@ -32,7 +32,6 @@ public class SegPerfilService {
         this.repo = repo;
     }
     
-    /*-----------------------------------------Busqueda-----------------------------------------*/
     public List<SegPerfil> listarPerfilAct(String estado) {
         return this.repo.findByEstadoOrderByNombre(estado);
     }

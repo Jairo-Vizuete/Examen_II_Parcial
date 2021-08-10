@@ -11,7 +11,9 @@
 package ec.edu.espe.distribuidas.examen.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -47,6 +50,9 @@ public class SegUsuarioPerfil implements Serializable {
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private SegUsuario segUsuario;
+    
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seg_usuario_perfil")
+//    private List<SegPerfil> perfiles;
 
     public SegUsuarioPerfil() {
     }

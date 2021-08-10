@@ -13,10 +13,14 @@ package ec.edu.espe.distribuidas.examen.service;
 import ec.edu.espe.distribuidas.examen.dao.SegPerfilRepository;
 import ec.edu.espe.distribuidas.examen.dao.SegUsuarioPerfilRepository;
 import ec.edu.espe.distribuidas.examen.dao.SegUsuarioRepository;
+import ec.edu.espe.distribuidas.examen.dto.SegUserPerfilRQ;
 import ec.edu.espe.distribuidas.examen.dto.SegUsuarioPerfilRQ;
 import ec.edu.espe.distribuidas.examen.model.SegPerfil;
 import ec.edu.espe.distribuidas.examen.model.SegUsuario;
 import ec.edu.espe.distribuidas.examen.model.SegUsuarioPerfil;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +45,7 @@ public class SegUsuarioPerfilService {
     }
 
     @Transactional
-    public void crearPerfiles(SegUsuarioPerfilRQ segUsuarioPerfilRQ) {
+    public void crearPerfil(SegUsuarioPerfilRQ segUsuarioPerfilRQ) {
         Optional<SegUsuario> segUsuario = this.segUsuarioRepository.findById(segUsuarioPerfilRQ.getCodUsuario());
         Optional<SegPerfil> segPerfil = this.segPerfilRepository.findById(segUsuarioPerfilRQ.getCodPerfil());
         SegUsuarioPerfil suP = new SegUsuarioPerfil(segUsuario.get().getCodUsuario(), segPerfil.get().getCodPerfil());
@@ -53,5 +57,21 @@ public class SegUsuarioPerfilService {
 
         log.info("Perfil: {}", suP.getSegUsuario());
         this.segUsuarioPerfilRepository.save(suP);
+    }
+
+    @Transactional
+    public void crearPerfiles(SegUserPerfilRQ segUserPerfilRQ) {
+        Optional<SegPerfil> segPerfil = this.segPerfilRepository.findById(segUserPerfilRQ.getCodPerfil());
+
+        for (SegPerfil perfil : segUserPerfilRQ.getPerfiles()) {
+            Optional<SegUsuario> segUsuario = this.segUsuarioRepository.findById(segUserPerfilRQ.getCodUsuario());
+            SegUsuarioPerfil suP = new SegUsuarioPerfil(segUsuario.get().getCodUsuario(), segPerfil.get().getCodPerfil());
+
+            suP.setSegUsuario(segUsuario.get());
+            suP.setSegPerfil(perfil);
+            suP.setEstado(segUserPerfilRQ.getEstado());
+            suP.setPorOmision("Y");
+            this.segUsuarioPerfilRepository.save(suP);
+        }
     }
 }

@@ -11,10 +11,15 @@
 package ec.edu.espe.distribuidas.examen.controller;
 
 import ec.edu.espe.distribuidas.examen.dto.SegUsuarioPerfilRQ;
+import ec.edu.espe.distribuidas.examen.model.SegPerfil;
 import ec.edu.espe.distribuidas.examen.service.SegUsuarioPerfilService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import static java.lang.StrictMath.log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,16 +41,33 @@ public class SegUsuarioPerfilController {
     }
 
     @PostMapping
-    public ResponseEntity createPersonaIdentificacion(@RequestBody SegUsuarioPerfilRQ segUsuarioPerfilRQ) {
+    @ApiOperation(value = "Crea un perfil para un usuario con omisión YES",
+            notes = "Crea un perfil para un usuario con omisión YES",
+            response = SegPerfil.class, hidden = false)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200,
+                message = "Ingresa un perfil a un usuario",
+                response = SegPerfil.class,
+                responseContainer = "List")
+    })
+    public ResponseEntity createPerfilUsuario(@RequestBody SegUsuarioPerfilRQ segUsuarioPerfilRQ) {
         try {
-//            PerPersonaIdentificacion ppi = new PerPersonaIdentificacion(perPersonaIdentificacionRQ.getCodPersona(), perPersonaIdentificacionRQ.getCodTipoIdentificacion());
-//            Optional<PerPersona> persona = this.personaService.obtenerPorCodigo(perPersonaIdentificacionRQ.getCodPersona());
-//            log.error("Ocurrio un error al crear la perIdentificacion. {} - retorna badrequest", e.getMessage());
-            this.service.crearPerfiles(segUsuarioPerfilRQ);
+            this.service.crearPerfil(segUsuarioPerfilRQ);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            log.error("Ocurrio un error al crear la perIdentificacion. {} - retorna badrequest", e.getMessage());
+            log.error("Ocurrio un error al crear el perfil usuario. {} - retorna badrequest", e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
+
+//    @PostMapping
+//    public ResponseEntity createPerfilUsuario(@RequestBody SegUsuarioPerfilRQ segUsuarioPerfilRQ) {
+//        try {
+//            this.service.crearPerfil(segUsuarioPerfilRQ);
+//            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            log.error("Ocurrio un error al crear los perfiles de usuario. {} - retorna badrequest", e.getMessage());
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
 }

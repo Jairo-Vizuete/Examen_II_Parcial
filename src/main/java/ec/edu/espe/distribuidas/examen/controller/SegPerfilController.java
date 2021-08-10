@@ -41,16 +41,16 @@ public class SegPerfilController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener todos las identificaciones de una persona",
-            notes = "Obtiene los datos basicos de la base de datos",
+    @ApiOperation(value = "Obtener todos los perfiles con estado ACT",
+            notes = "Obtiene todos los perfiles con el estado activado",
             response = SegPerfil.class, hidden = false)
     @ApiResponses(value = {
         @ApiResponse(code = 200,
-                message = "Retorna una lista de identificaciones de la persona o vacía si no existe ninguno en la base",
+                message = "Retorna una lista de perfiles o vacía si no existe ninguno en la base",
                 response = SegPerfil.class,
                 responseContainer = "List"),
         @ApiResponse(code = 404,
-                message = "Retorna una lista de identificaciones de la persona o vacía si no existe ninguno en la base",
+                message = "Retorna un error 404 de no existencia en la base",
                 response = SegPerfil.class,
                 responseContainer = "List")
     })
@@ -59,6 +59,4 @@ public class SegPerfilController {
         return ResponseEntity.ok(perfiles);
     }
 
-    
-    
 }
